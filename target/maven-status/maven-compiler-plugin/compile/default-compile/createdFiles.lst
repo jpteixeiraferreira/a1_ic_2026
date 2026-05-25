@@ -1,5 +1,10 @@
-jp\algoritmosbusca\AlgoritmosBusca.class
-jp\algoritmosbusca\BuscaA.class
+jp\algoritmosbusca\Adjacente.class
 jp\algoritmosbusca\BuscaA$Adjacente.class
 jp\algoritmosbusca\BuscaA$Grafo.class
 jp\algoritmosbusca\BuscaA$Vertice.class
+jp\algoritmosbusca\Grafo.class
+jp\algoritmosbusca\AlgoritmosBusca.class
+jp\algoritmosbusca\Vertice.class
+jp\algoritmosbusca\BuscaA.class
+jp\algoritmosbusca\BuscaGulosa.class
+jp\algoritmosbusca\Gulosa.class

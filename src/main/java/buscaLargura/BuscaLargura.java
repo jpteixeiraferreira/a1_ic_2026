@@ -1,8 +1,8 @@
-package jp.algoritmosbusca;
-
+package buscaLargura;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
-
+import java.util.Queue;
 
 class Adjacente {
     private Vertice cidade;
@@ -24,7 +24,7 @@ class Adjacente {
 
 class Vertice {
     private String rotulo;
-    private int distanciaObjetivo; 
+    private int distanciaObjetivo;
     private boolean visitado;
     private List<Adjacente> adjacentes;
 
@@ -58,22 +58,18 @@ class Vertice {
     public void adicionarAdjacente(Adjacente adj) {
         adjacentes.add(adj);
     }
-
-    public void exibirAdjacentes() {
-        System.out.print(rotulo + " -> ");
-        for (Adjacente a : adjacentes) {
-            System.out.print(a.getCidade().getRotulo() + "(" + a.getCusto() + ") ");
-        }
-        System.out.println();
-    }
 }
 
 class Grafo {
+
     private List<Vertice> cidades;
 
     public Grafo() {
+
         cidades = new ArrayList<>();
+
         inicializarCidades();
+
         criarAdjacencias();
     }
 
@@ -82,6 +78,7 @@ class Grafo {
     }
 
     private void inicializarCidades() {
+
         Vertice arad = new Vertice("Arad", 366);
         Vertice bucharest = new Vertice("Bucareste", 0);
         Vertice craiova = new Vertice("Craiova", 160);
@@ -102,8 +99,7 @@ class Grafo {
         Vertice urziceni = new Vertice("Urziceni", 80);
         Vertice vaslui = new Vertice("Vaslui", 199);
         Vertice zerind = new Vertice("Zerind", 374);
-        
-        
+
         cidades.add(arad);
         cidades.add(zerind);
         cidades.add(oradea);
@@ -127,6 +123,7 @@ class Grafo {
     }
 
     private void criarAdjacencias() {
+
         Vertice arad = getVertice("Arad");
         Vertice zerind = getVertice("Zerind");
         Vertice sibiu = getVertice("Sibiu");
@@ -216,50 +213,78 @@ class Grafo {
     }
 
     public Vertice getVertice(String rotulo) {
+
         for (Vertice v : cidades) {
+
             if (v.getRotulo().equalsIgnoreCase(rotulo)) {
                 return v;
             }
         }
+
         return null;
     }
 }
 
-class Gulosa {
+class Largura {
+
     private Vertice objetivo;
     private boolean status;
 
-    public Gulosa(Vertice objetivo) {
+    public Largura(Vertice objetivo) {
+
         this.objetivo = objetivo;
+
         this.status = false;
     }
 
-    public void buscar(Vertice atual) {
-        System.out.println("Visitando: " + atual.getRotulo());
-        atual.setVisitado(true);
+    public void buscar(Vertice inicial) {
 
-        if (atual == objetivo) {
-            System.out.println("Objetivo alcançado: " + objetivo.getRotulo());
-            status = true;
-            return;
-        }
+        Queue<Vertice> fila =
+                new LinkedList<>();
 
-        Vertice proximo = null;
-        int menorDistancia = Integer.MAX_VALUE;
+        inicial.setVisitado(true);
 
-        for (Adjacente adj : atual.getAdjacentes()) {
-            Vertice vizinho = adj.getCidade();
-            if (!vizinho.isVisitado() && vizinho.getDistanciaObjetivo() < menorDistancia) {
-                menorDistancia = vizinho.getDistanciaObjetivo();
-                proximo = vizinho;
+        fila.add(inicial);
+
+        while (!fila.isEmpty()) {
+
+            Vertice atual = fila.poll();
+
+            System.out.println(
+                    "Visitando: "
+                    + atual.getRotulo()
+            );
+
+            if (atual == objetivo) {
+
+                System.out.println(
+                        "Objetivo alcançado: "
+                        + objetivo.getRotulo()
+                );
+
+                status = true;
+
+                return;
+            }
+
+            for (Adjacente adj
+                    : atual.getAdjacentes()) {
+
+                Vertice vizinho =
+                        adj.getCidade();
+
+                if (!vizinho.isVisitado()) {
+
+                    vizinho.setVisitado(true);
+
+                    fila.add(vizinho);
+                }
             }
         }
 
-        if (proximo != null) {
-            buscar(proximo);
-        } else {
-            System.out.println("Não há mais cidades para visitar a partir de " + atual.getRotulo());
-        }
+        System.out.println(
+                "Não há mais cidades para visitar."
+        );
     }
 
     public boolean isStatus() {
@@ -267,13 +292,21 @@ class Gulosa {
     }
 }
 
-public class BuscaGulosa {
-    public static void main(String[] args) {
-        Grafo mapa = new Grafo();
-        Vertice arad = mapa.getVertice("Lugoj");
-        Vertice bucharest = mapa.getVertice("Bucareste");
+public class BuscaLargura {
 
-        Gulosa busca = new Gulosa(bucharest);
+    public static void main(String[] args) {
+
+        Grafo mapa = new Grafo();
+
+        Vertice arad =
+                mapa.getVertice("Arad");
+
+        Vertice bucharest =
+                mapa.getVertice("Bucareste");
+
+        Largura busca =
+                new Largura(bucharest);
+
         busca.buscar(arad);
     }
 }

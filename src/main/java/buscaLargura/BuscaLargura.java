@@ -1,6 +1,7 @@
 package buscaLargura;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -11,54 +12,33 @@ class Adjacente {
     private int custo;
 
     public Adjacente(Vertice cidade, int custo) {
-
         this.cidade = cidade;
-        this.custo = custo;
+        this.custo  = custo;
     }
 
-    public Vertice getCidade() {
-        return cidade;
-    }
-
-    public int getCusto() {
-        return custo;
-    }
+    public Vertice getCidade() { return cidade; }
+    public int getCusto()      { return custo;  }
 }
 
 class Vertice {
 
-    private String rotulo;
-    private int distanciaObjetivo;
-    private boolean visitado;
+    private String          rotulo;
+    private int             distanciaObjetivo;
+    private boolean         visitado;
     private List<Adjacente> adjacentes;
 
     public Vertice(String rotulo, int distanciaObjetivo) {
-
-        this.rotulo = rotulo;
+        this.rotulo            = rotulo;
         this.distanciaObjetivo = distanciaObjetivo;
-        this.visitado = false;
-        this.adjacentes = new ArrayList<>();
+        this.visitado          = false;
+        this.adjacentes        = new ArrayList<>();
     }
 
-    public String getRotulo() {
-        return rotulo;
-    }
-
-    public int getDistanciaObjetivo() {
-        return distanciaObjetivo;
-    }
-
-    public boolean isVisitado() {
-        return visitado;
-    }
-
-    public void setVisitado(boolean visitado) {
-        this.visitado = visitado;
-    }
-
-    public List<Adjacente> getAdjacentes() {
-        return adjacentes;
-    }
+    public String          getRotulo()            { return rotulo;            }
+    public int             getDistanciaObjetivo() { return distanciaObjetivo; }
+    public boolean         isVisitado()           { return visitado;          }
+    public void            setVisitado(boolean v) { visitado = v;             }
+    public List<Adjacente> getAdjacentes()        { return adjacentes;        }
 
     public void adicionarAdjacente(Adjacente adj) {
         adjacentes.add(adj);
@@ -70,162 +50,129 @@ class Grafo {
     private List<Vertice> cidades;
 
     public Grafo() {
-
         cidades = new ArrayList<>();
-
         inicializarCidades();
-
         criarAdjacencias();
     }
 
-    public List<Vertice> getCidades() {
-        return cidades;
-    }
+    public List<Vertice> getCidades() { return cidades; }
 
     private void inicializarCidades() {
-
-        Vertice arad = new Vertice("Arad", 366);
-        Vertice bucharest = new Vertice("Bucareste", 0);
-        Vertice craiova = new Vertice("Craiova", 160);
-        Vertice dobreta = new Vertice("Dobreta", 242);
-        Vertice eforie = new Vertice("Eforie", 161);
-        Vertice fagaras = new Vertice("Fagaras", 176);
-        Vertice giurgiu = new Vertice("Giurgiu", 77);
-        Vertice hirsova = new Vertice("Hirsova", 151);
-        Vertice iasi = new Vertice("Iasi", 226);
-        Vertice lugoj = new Vertice("Lugoj", 244);
-        Vertice mehadia = new Vertice("Mehadia", 241);
-        Vertice neamt = new Vertice("Neamt", 234);
-        Vertice oradea = new Vertice("Oradea", 380);
-        Vertice pitesti = new Vertice("Pitesti", 100);
-        Vertice rimnicu = new Vertice("Rimnicu Vilcea", 193);
-        Vertice sibiu = new Vertice("Sibiu", 253);
-        Vertice timisoara = new Vertice("Timisoara", 329);
-        Vertice urziceni = new Vertice("Urziceni", 80);
-        Vertice vaslui = new Vertice("Vaslui", 199);
-        Vertice zerind = new Vertice("Zerind", 374);
-
-        cidades.add(arad);
-        cidades.add(zerind);
-        cidades.add(oradea);
-        cidades.add(sibiu);
-        cidades.add(fagaras);
-        cidades.add(rimnicu);
-        cidades.add(pitesti);
-        cidades.add(timisoara);
-        cidades.add(lugoj);
-        cidades.add(mehadia);
-        cidades.add(dobreta);
-        cidades.add(craiova);
-        cidades.add(bucharest);
-        cidades.add(giurgiu);
-        cidades.add(urziceni);
-        cidades.add(hirsova);
-        cidades.add(eforie);
-        cidades.add(vaslui);
-        cidades.add(iasi);
-        cidades.add(neamt);
+        cidades.add(new Vertice("Arad",          366));
+        cidades.add(new Vertice("Zerind",         374));
+        cidades.add(new Vertice("Oradea",         380));
+        cidades.add(new Vertice("Sibiu",          253));
+        cidades.add(new Vertice("Fagaras",        176));
+        cidades.add(new Vertice("Rimnicu Vilcea", 193));
+        cidades.add(new Vertice("Pitesti",        100));
+        cidades.add(new Vertice("Timisoara",      329));
+        cidades.add(new Vertice("Lugoj",          244));
+        cidades.add(new Vertice("Mehadia",        241));
+        cidades.add(new Vertice("Dobreta",        242));
+        cidades.add(new Vertice("Craiova",        160));
+        cidades.add(new Vertice("Bucareste",        0));
+        cidades.add(new Vertice("Giurgiu",         77));
+        cidades.add(new Vertice("Urziceni",        80));
+        cidades.add(new Vertice("Hirsova",        151));
+        cidades.add(new Vertice("Eforie",         161));
+        cidades.add(new Vertice("Vaslui",         199));
+        cidades.add(new Vertice("Iasi",           226));
+        cidades.add(new Vertice("Neamt",          234));
     }
 
     private void criarAdjacencias() {
-
-        Vertice arad = getVertice("Arad");
-        Vertice zerind = getVertice("Zerind");
-        Vertice sibiu = getVertice("Sibiu");
-        Vertice timisoara = getVertice("Timisoara");
-        Vertice lugoj = getVertice("Lugoj");
-        Vertice mehadia = getVertice("Mehadia");
-        Vertice dobreta = getVertice("Dobreta");
-        Vertice craiova = getVertice("Craiova");
-        Vertice rimnicu = getVertice("Rimnicu Vilcea");
-        Vertice fagaras = getVertice("Fagaras");
-        Vertice pitesti = getVertice("Pitesti");
-        Vertice bucharest = getVertice("Bucareste");
-        Vertice giurgiu = getVertice("Giurgiu");
+        Vertice arad     = getVertice("Arad");
+        Vertice zerind   = getVertice("Zerind");
+        Vertice oradea   = getVertice("Oradea");
+        Vertice sibiu    = getVertice("Sibiu");
+        Vertice fagaras  = getVertice("Fagaras");
+        Vertice rimnicu  = getVertice("Rimnicu Vilcea");
+        Vertice pitesti  = getVertice("Pitesti");
+        Vertice timisoara= getVertice("Timisoara");
+        Vertice lugoj    = getVertice("Lugoj");
+        Vertice mehadia  = getVertice("Mehadia");
+        Vertice dobreta  = getVertice("Dobreta");
+        Vertice craiova  = getVertice("Craiova");
+        Vertice bucharest= getVertice("Bucareste");
+        Vertice giurgiu  = getVertice("Giurgiu");
         Vertice urziceni = getVertice("Urziceni");
-        Vertice hirsova = getVertice("Hirsova");
-        Vertice eforie = getVertice("Eforie");
-        Vertice vaslui = getVertice("Vaslui");
-        Vertice iasi = getVertice("Iasi");
-        Vertice neamt = getVertice("Neamt");
-        Vertice oradea = getVertice("Oradea");
+        Vertice hirsova  = getVertice("Hirsova");
+        Vertice eforie   = getVertice("Eforie");
+        Vertice vaslui   = getVertice("Vaslui");
+        Vertice iasi     = getVertice("Iasi");
+        Vertice neamt    = getVertice("Neamt");
 
-        arad.adicionarAdjacente(new Adjacente(zerind, 75));
-        arad.adicionarAdjacente(new Adjacente(sibiu, 140));
-        arad.adicionarAdjacente(new Adjacente(timisoara, 118));
+        arad.adicionarAdjacente(new Adjacente(zerind,    75));
+        arad.adicionarAdjacente(new Adjacente(sibiu,    140));
+        arad.adicionarAdjacente(new Adjacente(timisoara,118));
 
-        zerind.adicionarAdjacente(new Adjacente(arad, 75));
+        zerind.adicionarAdjacente(new Adjacente(arad,   75));
         zerind.adicionarAdjacente(new Adjacente(oradea, 71));
 
-        oradea.adicionarAdjacente(new Adjacente(zerind, 71));
-        oradea.adicionarAdjacente(new Adjacente(sibiu, 151));
+        oradea.adicionarAdjacente(new Adjacente(zerind,  71));
+        oradea.adicionarAdjacente(new Adjacente(sibiu,  151));
 
-        sibiu.adicionarAdjacente(new Adjacente(arad, 140));
+        sibiu.adicionarAdjacente(new Adjacente(arad,   140));
         sibiu.adicionarAdjacente(new Adjacente(oradea, 151));
-        sibiu.adicionarAdjacente(new Adjacente(fagaras, 99));
-        sibiu.adicionarAdjacente(new Adjacente(rimnicu, 80));
+        sibiu.adicionarAdjacente(new Adjacente(fagaras,  99));
+        sibiu.adicionarAdjacente(new Adjacente(rimnicu,  80));
 
-        fagaras.adicionarAdjacente(new Adjacente(sibiu, 99));
-        fagaras.adicionarAdjacente(new Adjacente(bucharest, 211));
+        fagaras.adicionarAdjacente(new Adjacente(sibiu,     99));
+        fagaras.adicionarAdjacente(new Adjacente(bucharest,211));
 
-        rimnicu.adicionarAdjacente(new Adjacente(sibiu, 80));
-        rimnicu.adicionarAdjacente(new Adjacente(pitesti, 97));
+        rimnicu.adicionarAdjacente(new Adjacente(sibiu,    80));
+        rimnicu.adicionarAdjacente(new Adjacente(pitesti,  97));
         rimnicu.adicionarAdjacente(new Adjacente(craiova, 146));
 
-        pitesti.adicionarAdjacente(new Adjacente(rimnicu, 97));
-        pitesti.adicionarAdjacente(new Adjacente(craiova, 138));
-        pitesti.adicionarAdjacente(new Adjacente(bucharest, 101));
+        pitesti.adicionarAdjacente(new Adjacente(rimnicu,   97));
+        pitesti.adicionarAdjacente(new Adjacente(craiova,  138));
+        pitesti.adicionarAdjacente(new Adjacente(bucharest,101));
 
         craiova.adicionarAdjacente(new Adjacente(dobreta, 120));
         craiova.adicionarAdjacente(new Adjacente(rimnicu, 146));
         craiova.adicionarAdjacente(new Adjacente(pitesti, 138));
 
-        timisoara.adicionarAdjacente(new Adjacente(arad, 118));
+        timisoara.adicionarAdjacente(new Adjacente(arad,  118));
         timisoara.adicionarAdjacente(new Adjacente(lugoj, 111));
 
-        lugoj.adicionarAdjacente(new Adjacente(timisoara, 111));
-        lugoj.adicionarAdjacente(new Adjacente(mehadia, 70));
+        lugoj.adicionarAdjacente(new Adjacente(timisoara,111));
+        lugoj.adicionarAdjacente(new Adjacente(mehadia,   70));
 
-        mehadia.adicionarAdjacente(new Adjacente(lugoj, 70));
+        mehadia.adicionarAdjacente(new Adjacente(lugoj,   70));
         mehadia.adicionarAdjacente(new Adjacente(dobreta, 75));
 
-        dobreta.adicionarAdjacente(new Adjacente(mehadia, 75));
+        dobreta.adicionarAdjacente(new Adjacente(mehadia,  75));
         dobreta.adicionarAdjacente(new Adjacente(craiova, 120));
 
         bucharest.adicionarAdjacente(new Adjacente(fagaras, 211));
         bucharest.adicionarAdjacente(new Adjacente(pitesti, 101));
-        bucharest.adicionarAdjacente(new Adjacente(giurgiu, 90));
+        bucharest.adicionarAdjacente(new Adjacente(giurgiu,  90));
         bucharest.adicionarAdjacente(new Adjacente(urziceni, 85));
 
         giurgiu.adicionarAdjacente(new Adjacente(bucharest, 90));
 
         urziceni.adicionarAdjacente(new Adjacente(bucharest, 85));
-        urziceni.adicionarAdjacente(new Adjacente(hirsova, 98));
-        urziceni.adicionarAdjacente(new Adjacente(vaslui, 142));
+        urziceni.adicionarAdjacente(new Adjacente(hirsova,   98));
+        urziceni.adicionarAdjacente(new Adjacente(vaslui,   142));
 
         hirsova.adicionarAdjacente(new Adjacente(urziceni, 98));
-        hirsova.adicionarAdjacente(new Adjacente(eforie, 86));
+        hirsova.adicionarAdjacente(new Adjacente(eforie,   86));
 
         eforie.adicionarAdjacente(new Adjacente(hirsova, 86));
 
-        vaslui.adicionarAdjacente(new Adjacente(urziceni, 142));
-        vaslui.adicionarAdjacente(new Adjacente(iasi, 92));
+        vaslui.adicionarAdjacente(new Adjacente(urziceni,142));
+        vaslui.adicionarAdjacente(new Adjacente(iasi,     92));
 
         iasi.adicionarAdjacente(new Adjacente(vaslui, 92));
-        iasi.adicionarAdjacente(new Adjacente(neamt, 87));
+        iasi.adicionarAdjacente(new Adjacente(neamt,  87));
 
         neamt.adicionarAdjacente(new Adjacente(iasi, 87));
     }
 
     public Vertice getVertice(String rotulo) {
-
         for (Vertice v : cidades) {
-
-            if (v.getRotulo().equalsIgnoreCase(rotulo)) {
-                return v;
-            }
+            if (v.getRotulo().equalsIgnoreCase(rotulo)) return v;
         }
-
         return null;
     }
 }
@@ -236,124 +183,99 @@ class Largura {
     private boolean status;
 
     public Largura(Vertice objetivo) {
-
         this.objetivo = objetivo;
-
-        this.status = false;
+        this.status   = false;
     }
 
     public void buscar(Vertice inicial) {
 
-        Queue<Vertice> fila =
-                new LinkedList<>();
-
-        Queue<Integer> custos =
-                new LinkedList<>();
+        Queue<Vertice> fila   = new LinkedList<>();
+        Queue<Integer> custos = new LinkedList<>();
 
         inicial.setVisitado(true);
-
         fila.add(inicial);
-
         custos.add(0);
 
-        System.out.println(
-                "Iniciando busca em largura...\n"
-        );
+        System.out.println("Iniciando busca em largura...\n");
 
         while (!fila.isEmpty()) {
 
-            Vertice atual = fila.poll();
-
-            int custoAtual = custos.poll();
+            Vertice atual     = fila.poll();
+            int     custoAtual = custos.poll();
 
             System.out.println(
-                    "Visitando: "
-                    + atual.getRotulo()
-                    + " | g(n)=" + custoAtual
-                    + " | h(n)=" + atual.getDistanciaObjetivo()
+                "Visitando: " + atual.getRotulo()
+                + " | g(n)=" + custoAtual
+                + " | h(n)=" + atual.getDistanciaObjetivo()
             );
 
             if (atual == objetivo) {
-
                 System.out.println(
-                        "\nObjetivo alcançado: "
-                        + objetivo.getRotulo()
-                        + " | custo total=" + custoAtual
+                    "\nObjetivo alcancado: " + objetivo.getRotulo()
+                    + " | custo total=" + custoAtual
                 );
-
                 status = true;
-
                 return;
             }
 
-            System.out.println("Expandindo vizinhos:");
-
+            List<Adjacente> candidatos = new ArrayList<>();
             for (Adjacente adj : atual.getAdjacentes()) {
+                if (!adj.getCidade().isVisitado()) {
+                    candidatos.add(adj);
+                }
+            }
 
-                Vertice vizinho =
-                        adj.getCidade();
+            candidatos.sort(Comparator.comparingInt(Adjacente::getCusto));
 
-                if (!vizinho.isVisitado()) {
+            System.out.println("Expandindo vizinhos");
 
-                    int custoAresta =
-                            adj.getCusto();
+            if (!candidatos.isEmpty()) {
 
-                    int novoCusto =
-                            custoAtual + custoAresta;
+                Adjacente melhor    = candidatos.get(0);
+                Vertice   vizinho   = melhor.getCidade();
+                int       custoAre  = melhor.getCusto();
+                int       novoCusto = custoAtual + custoAre;
 
-                    vizinho.setVisitado(true);
+                vizinho.setVisitado(true);
+                fila.add(vizinho);
+                custos.add(novoCusto);
 
-                    fila.add(vizinho);
+                System.out.println(
+                    "  Escolhido (menor aresta): " + vizinho.getRotulo()
+                    + " | custo aresta=" + custoAre
+                    + " | g(n)=" + novoCusto
+                    + " | h(n)=" + vizinho.getDistanciaObjetivo()
+                );
 
-                    custos.add(novoCusto);
-
+                for (int k = 1; k < candidatos.size(); k++) {
+                    Adjacente desc = candidatos.get(k);
                     System.out.println(
-                            "  Adicionado à fila: "
-                            + vizinho.getRotulo()
-                            + " | custo aresta=" + custoAresta
-                            + " | g(n)=" + novoCusto
-                            + " | h(n)=" + vizinho.getDistanciaObjetivo()
+                        "  Descartado (aresta maior): " + desc.getCidade().getRotulo()
+                        + " | custo aresta=" + desc.getCusto()
                     );
                 }
             }
 
             System.out.print("Fila atual: ");
-
-            for (Vertice v : fila) {
-
-                System.out.print(
-                        v.getRotulo() + " -> "
-                );
-            }
-
+            for (Vertice v : fila) System.out.print(v.getRotulo() + " -> ");
             System.out.println("\n--------------------------------------------------");
         }
 
-        System.out.println(
-                "Não há mais cidades para visitar."
-        );
+        System.out.println("Nao ha mais cidades para visitar.");
     }
 
-    public boolean isStatus() {
-        return status;
-    }
+    public boolean isStatus() { return status; }
 }
 
 public class BuscaLargura {
 
     public static void main(String[] args) {
 
-        Grafo mapa = new Grafo();
+        Grafo   mapa      = new Grafo();
+        Vertice arad      = mapa.getVertice("Arad");
+        Vertice bucharest = mapa.getVertice("Bucareste");
 
-        Vertice arad =
-                mapa.getVertice("Arad");
-
-        Vertice bucharest =
-                mapa.getVertice("Bucareste");
-
-        Largura busca =
-                new Largura(bucharest);
-
+        Largura busca = new Largura(bucharest);
         busca.buscar(arad);
     }
 }

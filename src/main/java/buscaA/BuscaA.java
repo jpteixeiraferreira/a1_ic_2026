@@ -234,62 +234,89 @@ class AEstrela {
         buscar(atual, 0);
     }
 
-    private void buscar(Vertice atual, int custoAtual) {
+private void buscar(Vertice atual, int custoAtual) {
 
-        System.out.println("Visitando: " + atual.getRotulo());
+    int hAtual = atual.getDistanciaObjetivo();
+    int fAtual = custoAtual + hAtual;
 
-        atual.setVisitado(true);
+    System.out.println(
+            "Visitando: " + atual.getRotulo()
+            + " | g=" + custoAtual
+            + " | h=" + hAtual
+            + " | f=" + fAtual
+    );
 
-        if (atual == objetivo) {
+    atual.setVisitado(true);
 
-            System.out.println("Objetivo alcançado: " + objetivo.getRotulo());
+    if (atual == objetivo) {
 
-            status = true;
+        System.out.println(
+                "Objetivo alcançado: "
+                + objetivo.getRotulo()
+                + " | Custo total=" + custoAtual
+        );
 
-            return;
-        }
+        status = true;
 
-        Vertice proximo = null;
+        return;
+    }
 
-        int menorValor = Integer.MAX_VALUE;
+    Vertice proximo = null;
 
-        int novoCusto = 0;
+    int menorValor = Integer.MAX_VALUE;
 
-        for (Adjacente adj : atual.getAdjacentes()) {
+    int novoCusto = 0;
 
-            Vertice vizinho = adj.getCidade();
+    for (Adjacente adj : atual.getAdjacentes()) {
 
-            if (!vizinho.isVisitado()) {
+        Vertice vizinho = adj.getCidade();
 
-                int g = custoAtual + adj.getCusto();
+        if (!vizinho.isVisitado()) {
 
-                int h = vizinho.getDistanciaObjetivo();
+            int g = custoAtual + adj.getCusto();
 
-                int f = g + h;
+            int h = vizinho.getDistanciaObjetivo();
 
-                if (f < menorValor) {
-
-                    menorValor = f;
-
-                    proximo = vizinho;
-
-                    novoCusto = g;
-                }
-            }
-        }
-
-        if (proximo != null) {
-
-            buscar(proximo, novoCusto);
-
-        } else {
+            int f = g + h;
 
             System.out.println(
-                    "Não há mais cidades para visitar a partir de "
-                    + atual.getRotulo()
+                    "  Avaliando: " + vizinho.getRotulo()
+                    + " | g=" + g
+                    + " | h=" + h
+                    + " | f=" + f
             );
+
+            if (f < menorValor) {
+
+                menorValor = f;
+
+                proximo = vizinho;
+
+                novoCusto = g;
+            }
         }
     }
+
+    if (proximo != null) {
+
+        System.out.println(
+                ">> Próxima escolhida: "
+                + proximo.getRotulo()
+                + " | menor f=" + menorValor
+        );
+
+        System.out.println("--------------------------------");
+
+        buscar(proximo, novoCusto);
+
+    } else {
+
+        System.out.println(
+                "Não há mais cidades para visitar a partir de "
+                + atual.getRotulo()
+        );
+    }
+}
 
     public boolean isStatus() {
         return status;

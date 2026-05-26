@@ -1,14 +1,17 @@
 package buscaLargura;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
 class Adjacente {
+
     private Vertice cidade;
     private int custo;
 
     public Adjacente(Vertice cidade, int custo) {
+
         this.cidade = cidade;
         this.custo = custo;
     }
@@ -23,12 +26,14 @@ class Adjacente {
 }
 
 class Vertice {
+
     private String rotulo;
     private int distanciaObjetivo;
     private boolean visitado;
     private List<Adjacente> adjacentes;
 
     public Vertice(String rotulo, int distanciaObjetivo) {
+
         this.rotulo = rotulo;
         this.distanciaObjetivo = distanciaObjetivo;
         this.visitado = false;
@@ -242,24 +247,38 @@ class Largura {
         Queue<Vertice> fila =
                 new LinkedList<>();
 
+        Queue<Integer> custos =
+                new LinkedList<>();
+
         inicial.setVisitado(true);
 
         fila.add(inicial);
+
+        custos.add(0);
+
+        System.out.println(
+                "Iniciando busca em largura...\n"
+        );
 
         while (!fila.isEmpty()) {
 
             Vertice atual = fila.poll();
 
+            int custoAtual = custos.poll();
+
             System.out.println(
                     "Visitando: "
                     + atual.getRotulo()
+                    + " | g(n)=" + custoAtual
+                    + " | h(n)=" + atual.getDistanciaObjetivo()
             );
 
             if (atual == objetivo) {
 
                 System.out.println(
-                        "Objetivo alcançado: "
+                        "\nObjetivo alcançado: "
                         + objetivo.getRotulo()
+                        + " | custo total=" + custoAtual
                 );
 
                 status = true;
@@ -267,19 +286,47 @@ class Largura {
                 return;
             }
 
-            for (Adjacente adj
-                    : atual.getAdjacentes()) {
+            System.out.println("Expandindo vizinhos:");
+
+            for (Adjacente adj : atual.getAdjacentes()) {
 
                 Vertice vizinho =
                         adj.getCidade();
 
                 if (!vizinho.isVisitado()) {
 
+                    int custoAresta =
+                            adj.getCusto();
+
+                    int novoCusto =
+                            custoAtual + custoAresta;
+
                     vizinho.setVisitado(true);
 
                     fila.add(vizinho);
+
+                    custos.add(novoCusto);
+
+                    System.out.println(
+                            "  Adicionado à fila: "
+                            + vizinho.getRotulo()
+                            + " | custo aresta=" + custoAresta
+                            + " | g(n)=" + novoCusto
+                            + " | h(n)=" + vizinho.getDistanciaObjetivo()
+                    );
                 }
             }
+
+            System.out.print("Fila atual: ");
+
+            for (Vertice v : fila) {
+
+                System.out.print(
+                        v.getRotulo() + " -> "
+                );
+            }
+
+            System.out.println("\n--------------------------------------------------");
         }
 
         System.out.println(
